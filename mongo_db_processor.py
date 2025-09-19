@@ -110,6 +110,9 @@ class MongoRepository:
     def find_game(self, query):
         return self._collections.steam_apps_collection.find_one(query, {'_id': 0})
 
+    def find_first_game(self):
+        return self._collections.steam_apps_collection.find_one({}, {'_id': 0})
+
     def add_game(self, game):
         if not self.find_game({'appid': game.get('appid')}):
             self._collections.steam_apps_collection.insert_one(game)
@@ -122,6 +125,9 @@ class MongoRepository:
 
     def clear_top(self):
         self._collections.top_games.delete_many({})
+
+    def delete_game(self, appid: int):
+        self._collections.steam_apps_collection.delete_one({'appid': appid})
 
     def get_top(self, num_games: int):
         return self._collections.top_games.find({}, {'_id': 0}).limit(num_games)
