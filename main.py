@@ -23,7 +23,7 @@ def get_games():
 
 @app.post('/games/{appid}')
 def add_game(appid: int):
-    if repository.find_game({'id': appid}):
+    if repository.find_game({'appid': appid}):
         return JSONResponse(
             status_code=status.HTTP_409_CONFLICT,
             content={'Msg': 'Current game already in the lib'}
